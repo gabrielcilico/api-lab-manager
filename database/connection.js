@@ -1,4 +1,4 @@
-var knex = require('knex')({
+const knex = require('knex')({
     client: 'mysql2',
     connection: {
       host : 'mysql741.umbler.com',
