@@ -4,7 +4,8 @@
   "description": "Trabalho bimestral do sexto bimestre de Engenharia de Software pela Unicesumar.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "author": "Gabriel Cilico Leite",
   "license": "ISC",
