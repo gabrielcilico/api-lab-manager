@@ -12,6 +12,8 @@ app.use(bodyParser.json())
 
 app.use("/",router);
 
-app.listen(5000,() => {
-    console.log("Servidor rodando")
+app.set('port', (process.env.PORT || 5000));
+
+app.listen(app.get('port'),() => {
+    console.log("Servidor rodando na porta " + app.get('port'))
 });
