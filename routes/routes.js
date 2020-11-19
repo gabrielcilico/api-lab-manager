@@ -1,8 +1,10 @@
 var express = require("express")
 var router = express.Router();
+var HomeController = require("../controllers/HomeController");
 var PessoaController = require("../controllers/PessoaController");
 var LaboratorioController = require("../controllers/LaboratorioController");
 
+router.get("/", HomeController.index);
 
 // Pessoa
 router.post('/pessoa', PessoaController.create);
