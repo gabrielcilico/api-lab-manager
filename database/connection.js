@@ -1,9 +1,9 @@
 var knex = require('knex')({
     client: 'mysql2',
     connection: {
-      host : '127.0.0.1',
-      user : 'root',
-      password : '',
+      host : 'mysql741.umbler.com',
+      user : 'gabrielcilico',
+      password : 'abcdefg123456',
       database : 'apilabmanager'
     }
   });
