@@ -82,10 +82,22 @@ class LaboratorioController {
         result.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',') 
+            r.reservasFuturas = this.getReservasFuturas(id)
         });
 
         res.status = 200
         res.json(result)
+    }
+
+    async getReservasFuturas(id) {
+        let result = await Reserva.getReservasFuturasByLaboratorio(id)
+        let datasReservadas = []
+        if (result.length > 0) {
+            result.forEach(r => {
+                datasReservadas.push({data: r.data, hora: r.hora});
+            })
+        }
+        return datasReservadas
     }
 
     async getByNome(req, res) {
@@ -105,7 +117,7 @@ class LaboratorioController {
 
         result.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
-            r.horas_possiveis = r.horas_possiveis.split(',') 
+            r.horas_possiveis = r.horas_possiveis.split(',')
         });
 
         res.status = 200
