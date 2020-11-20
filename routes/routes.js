@@ -27,7 +27,4 @@ router.get('/reservas', ReservaController.getAll);
 router.get('/reserva/getByLaboratorio/:id', ReservaController.getByLaboratorio);
 router.delete('/reserva/:id', ReservaController.cancelaReserva);
 
-// Dev utils
-router.get('/criarLaboratorios', HomeController.criaLaboratorios);
-
 module.exports = router;
