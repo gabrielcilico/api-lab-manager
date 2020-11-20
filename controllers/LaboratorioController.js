@@ -82,7 +82,7 @@ class LaboratorioController {
         result.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',') 
-            r.reservasFuturas = this.getReservasFuturas(id)
+            r.reservasFuturas = getReservasFuturas(id)
         });
 
         res.status = 200
