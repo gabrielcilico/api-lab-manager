@@ -72,8 +72,20 @@ class ReservaController {
     }
 
     async getAll(req, res) {
+        let result = await Reserva.getAll()
+        if (!result) {
+            res.status = 404
+            res.json({ err: "Não há reservas" })
+            return
+        }
+
+        let labs = await Laboratorio.getAll()
+        result.forEach(r => {
+            r.laboratorio = labs.filter(l => l.id == r.id_laboratorio)
+        })
+
         res.status = 200
-        res.json(await Reserva.getAll())
+        res.json(result)
     }
 
     async getById(req, res) {
