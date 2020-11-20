@@ -76,6 +76,25 @@ class Laboratorio {
             console.log(err)
         }
     }
+
+    async getByNomeDataHora(nome,data,hora) {
+        console.log(data)
+        if (isNaN(data)) {
+            let tmp = data.split('/');
+            let date = new Date(tmp[0], tmp[1], tmp[2]);
+            data = date.getDay()
+        }
+
+        try {
+            return await knex.select('*')
+                .from(TABLE_NAME)
+                .whereRaw('UPPER(nome) LIKE ?', `%${nome.replace(' ', '%')}%`)
+                .andWhere('dias_possiveis', 'like', `%${data}%`)
+                .andWhere('horas_possiveis', 'like', `%${hora}%`)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 }
 
 module.exports = new Laboratorio();
