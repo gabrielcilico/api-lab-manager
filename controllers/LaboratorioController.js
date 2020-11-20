@@ -79,7 +79,7 @@ class LaboratorioController {
             return
         }
 
-        result.forEach(r => {
+        await Promise.all(result.forEach(async (r) => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',')
             let result = await Reserva.getReservasFuturasByLaboratorio(id)
@@ -90,7 +90,7 @@ class LaboratorioController {
                 })
             }
             r.reservasFuturas = datasReservadas
-        });
+        }));
 
         res.status = 200
         res.json(result)
