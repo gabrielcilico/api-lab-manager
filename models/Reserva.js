@@ -4,9 +4,9 @@ const TABLE_NAME = 'reserva';
 class Reserva {
     
     async create(reserva) {
-        let {id_pessoa, id_laboratorio, data, hora} = reserva
+        let {id_laboratorio, data, hora} = reserva
         try {
-            await knex.insert({id_pessoa, id_laboratorio, data, hora}).table(TABLE_NAME)
+            await knex.insert({id_pessoa: 1, id_laboratorio, data, hora}).table(TABLE_NAME)
         } catch (err) {
             console.log(err)
         }
@@ -57,6 +57,24 @@ class Reserva {
             return await knex.select('*').table(TABLE_NAME).where({data: data, hora: hora})
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    async getReservasFuturas() {
+        try {
+            return await knex.select('*').table(TABLE_NAME).where('data', '>=', new Date()).orWhereBetween('data', [0,6])
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async getReservasFuturasByLaboratorio(id) {
+        try {
+            return await knex.select('*').table(TABLE_NAME).where({id_laboratorio: id}).andWhere(() => {
+                this.where('data', '>=', new Date()).orWhereBetween('data', [0,6])
+            })
+        } catch (err) {
+            console.log(err);
         }
     }
 

@@ -1,17 +1,10 @@
-const Pessoa = require('../models/Pessoa')
 const Laboratorio = require('../models/Laboratorio')
 const Reserva = require('../models/Reserva')
 
 class ReservaController {
     
     async create(req,res) {
-        let {id_pessoa, id_laboratorio, data, hora} = req.body
-        
-        if (!id_pessoa) {
-            res.status = 400
-            res.json({ err: "Pessoa não informada" })
-            return
-        }
+        let {id_laboratorio, data, hora} = req.body
 
         if (!id_laboratorio) {
             res.status = 400
@@ -33,10 +26,12 @@ class ReservaController {
 
         // let pessoa = await Pessoa.getById(id_pessoa)
         
-        let laboratorio = await Laboratorio.getById(id_laboratorio).forEach(r => {
+        let laboratorio = await Laboratorio.getById(id_laboratorio)
+        laboratorio.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',') 
         })[0]
+
         if (!laboratorio) {
             res.status = 400
             res.json({ err: "Laboratório informado não existe" })
@@ -71,7 +66,56 @@ class ReservaController {
             return
         }
 
-        await Reserva.create({id_pessoa, id_laboratorio, data, hora})
+        await Reserva.create({id_laboratorio, data, hora})
+        res.sendStatus(200)
+    }
+
+    async getAll(req, res) {
+        res.status = 200
+        res.json(await Reserva.getAll())
+    }
+
+    async getById(req, res) {
+        let id = req.params.id
+        let result = await Reserva.getById(id)
+        if (result.length == 0) {
+            res.status = 404
+            res.json({ err: "A reserva informada não existe" })
+            return
+        }
+
+        res.status = 200
+        res.json(result)
+    }
+
+    async getByLaboratorio(req, res) {
+        let id = req.params.id
+        if (!id) {
+            res.status = 400
+            res.json({ err: "O laboratório informado não existe" })
+            return 
+        }
+        let laboratorio = await Laboratorio.getById(id);
+        if (laboratorio.length == 0) {
+            res.status = 404
+            res.json({ err: "O laboratório informado não existe" })
+            return
+        }
+
+        res.status = 200
+        res.json(await Reserva.getByLaboratorio(id))
+    }
+
+    async cancelaReserva(req,res) {
+        let id = req.params.id
+        let reserva = await Reserva.getById(id)
+        if (reserva.length == 0) {
+            res.status = 404
+            res.json({ err: "A reserva informada não existe" })
+            return
+        }
+
+        await Reserva.cancela(id)
         res.sendStatus(200)
     }
 }

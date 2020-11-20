@@ -31,7 +31,7 @@ class Laboratorio {
 
     async getByNome(nome) {
         try {
-            let result = await knex.select('*').from(TABLE_NAME).where('nome', 'like', `%${nome.replace(' ', '%')}%`)
+            let result = await knex.select('*').from(TABLE_NAME).whereRaw('UPPER(nome) LIKE ?', `%${nome.replace(' ', '%')}%`)
             return result
         } catch (err) {
             console.log(err)
