@@ -1,4 +1,5 @@
-var Laboratorio = require('../models/Laboratorio');
+const Laboratorio = require('../models/Laboratorio');
+const Reserva = require('../models/Reserva');
 
 class LaboratorioController {
 
