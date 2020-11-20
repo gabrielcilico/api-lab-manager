@@ -37,7 +37,7 @@ class ReservaController {
             res.json({ err: "Laboratório informado não existe" })
             return
         }
-        laboratorio = laboratorio[0]
+        laboratorio = laboratorio[0];
 
         let diaDaSemana = 0;
         if (isNaN(data)) {
