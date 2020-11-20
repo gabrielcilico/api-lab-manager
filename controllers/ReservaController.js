@@ -30,13 +30,14 @@ class ReservaController {
         laboratorio.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',') 
-        })[0]
+        })
 
         if (!laboratorio) {
             res.status = 400
             res.json({ err: "Laboratório informado não existe" })
             return
         }
+        laboratorio = laboratorio[0];
 
         let diaDaSemana = 0;
         if (isNaN(data)) {
@@ -47,13 +48,13 @@ class ReservaController {
             diaDaSemana = data
         }
 
-        if(!laboratorio.dias_possiveis.contains(diaDaSemana)) {
+        if(laboratorio.dias_possiveis.filter(r => r == diaDaSemana).length == 0) {
             res.status = 400
             res.json({ err: "Laboratório não permite reservas para essa data" })
             return
         }
 
-        if (!laboratorio.horas_possiveis.contains(hora)) {
+        if (laboratorio.horas_possiveis.filter(r => r == hora).length == 0) {
             res.status = 400
             res.json({ err: "Laboratório não permite reservas para esse horário" })
             return
@@ -71,8 +72,20 @@ class ReservaController {
     }
 
     async getAll(req, res) {
+        let result = await Reserva.getAll()
+        if (!result) {
+            res.status = 404
+            res.json({ err: "Não há reservas" })
+            return
+        }
+
+        let labs = await Laboratorio.getAll()
+        result.forEach(r => {
+            r.laboratorio = labs.filter(l => l.id == r.id_laboratorio)
+        })
+
         res.status = 200
-        res.json(await Reserva.getAll())
+        res.json(result)
     }
 
     async getById(req, res) {
@@ -88,6 +101,29 @@ class ReservaController {
         res.json(result)
     }
 
+    async getDataHoraReservadasByLaboratorio(req,res) {
+        let id = req.params.id
+        if (!id) {
+            res.status = 400
+            res.json({ err: "O laboratório informado não existe" })
+            return 
+        }
+        let laboratorio = await Laboratorio.getById(id);
+        if (laboratorio.length == 0) {
+            res.status = 404
+            res.json({ err: "O laboratório informado não existe" })
+            return
+        }
+        let datasReservadas = []
+        let result = await Reserva.getByLaboratorio(id)
+        result.forEach(r => {
+            datasReservadas.push({data: r.data, hora: r.hora});
+        })
+
+        res.status = 200
+        res.json(datasReservadas)
+    }
+
     async getByLaboratorio(req, res) {
         let id = req.params.id
         if (!id) {
@@ -101,9 +137,9 @@ class ReservaController {
             res.json({ err: "O laboratório informado não existe" })
             return
         }
-
+        let result = await Reserva.getByLaboratorio(id)
         res.status = 200
-        res.json(await Reserva.getByLaboratorio(id))
+        res.json(result)
     }
 
     async cancelaReserva(req,res) {

@@ -26,6 +26,7 @@ router.post('/laboratorio/getByNomeDataHora', LaboratorioController.getByNomeDat
 router.post('/reserva', ReservaController.create);
 router.get('/reservas', ReservaController.getAll);
 router.get('/reserva/getByLaboratorio/:id', ReservaController.getByLaboratorio);
+router.get('/reserva/getDataHoraReservadas/:id', ReservaController.getDataHoraReservadasByLaboratorio);
 router.delete('/reserva/:id', ReservaController.cancelaReserva);
 
 module.exports = router;
