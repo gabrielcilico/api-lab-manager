@@ -1,3 +1,4 @@
+const Laboratorio = require('../models/Laboratorio')
 class HomeController {
 
     async index(req,res) {
