@@ -20,6 +20,7 @@ router.get('/laboratorio/getByNome/:nome', LaboratorioController.getByNome);
 router.post('/laboratorio/getByData', LaboratorioController.getByData);
 router.post('/laboratorio/getByHora', LaboratorioController.getByHora);
 router.post('/laboratorio/getByDataHora', LaboratorioController.getByDataHora);
+router.post('/laboratorio/getByNomeDataHora', LaboratorioController.getByNomeDataHora);
 
 // Reserva
 router.post('/reserva', ReservaController.create);

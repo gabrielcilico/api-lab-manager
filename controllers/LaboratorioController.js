@@ -183,6 +183,42 @@ class LaboratorioController {
         res.status = 200
         res.json(result)
     }
+
+    async getByNomeDataHora(req,res) {
+        let { nome, data, hora } = req.body
+        if (!nome) {
+            res.status = 400
+            res.json({ err: "Nome inválido" })
+            return
+        }
+
+        if (data == undefined || data == "") {
+            res.status = 400
+            res.json({ err: "Data inválida" })
+            return
+        }
+
+        if (hora == undefined || hora == "") {
+            res.status = 400
+            res.json({ err: "Hora inválida" })
+            return
+        }
+
+        let result = await Laboratorio.getByNomeDataHora(data,hora)
+        if (result.length <= 0) {
+            res.status = 404
+            res.json({ err: "Não encontramos laboratórios livres para a data e hora solicitada" })
+            return
+        }
+
+        result.forEach(r => {
+            r.dias_possiveis = r.dias_possiveis.split(',')
+            r.horas_possiveis = r.horas_possiveis.split(',') 
+        });
+
+        res.status = 200
+        res.json(result)
+    }
 }
 
 module.exports = new LaboratorioController()
