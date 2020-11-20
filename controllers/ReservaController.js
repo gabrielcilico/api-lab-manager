@@ -30,13 +30,14 @@ class ReservaController {
         laboratorio.forEach(r => {
             r.dias_possiveis = r.dias_possiveis.split(',')
             r.horas_possiveis = r.horas_possiveis.split(',') 
-        })[0]
+        })
 
         if (!laboratorio) {
             res.status = 400
             res.json({ err: "Laboratório informado não existe" })
             return
         }
+        laboratorio = laboratorio[0]
 
         let diaDaSemana = 0;
         if (isNaN(data)) {
