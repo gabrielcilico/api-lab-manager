@@ -48,15 +48,13 @@ class ReservaController {
             diaDaSemana = data
         }
 
-        console.log(laboratorio.dias_possiveis)
-
-        if(!laboratorio.dias_possiveis.contains(diaDaSemana)) {
+        if(laboratorio.dias_possiveis.filter(r => r == diaDaSemana).length == 0) {
             res.status = 400
             res.json({ err: "Laboratório não permite reservas para essa data" })
             return
         }
 
-        if (!laboratorio.horas_possiveis.contains(hora)) {
+        if (laboratorio.horas_possiveis.filter(r => r == hora).length == 0) {
             res.status = 400
             res.json({ err: "Laboratório não permite reservas para esse horário" })
             return
