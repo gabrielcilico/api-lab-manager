@@ -89,6 +89,29 @@ class ReservaController {
         res.json(result)
     }
 
+    async getDataHoraReservadasByLaboratorio(req,res) {
+        let id = req.params.id
+        if (!id) {
+            res.status = 400
+            res.json({ err: "O laboratório informado não existe" })
+            return 
+        }
+        let laboratorio = await Laboratorio.getById(id);
+        if (laboratorio.length == 0) {
+            res.status = 404
+            res.json({ err: "O laboratório informado não existe" })
+            return
+        }
+        let datasReservadas = []
+        let result = await Reserva.getByLaboratorio(id)
+        result.forEach(r => {
+            datasReservadas.push({data: r.data, hora: r.hora});
+        })
+
+        res.status = 200
+        res.json(datasReservadas)
+    }
+
     async getByLaboratorio(req, res) {
         let id = req.params.id
         if (!id) {
@@ -102,9 +125,9 @@ class ReservaController {
             res.json({ err: "O laboratório informado não existe" })
             return
         }
-
+        let result = await Reserva.getByLaboratorio(id)
         res.status = 200
-        res.json(await Reserva.getByLaboratorio(id))
+        res.json(result)
     }
 
     async cancelaReserva(req,res) {

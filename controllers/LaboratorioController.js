@@ -1,6 +1,4 @@
 const Laboratorio = require('../models/Laboratorio');
-const Reserva = require('../models/Reserva');
-
 class LaboratorioController {
 
     async create(req,res) {
@@ -79,19 +77,6 @@ class LaboratorioController {
             res.json({ err: "Não existe laboratório com este ID" })
             return
         }
-
-        await Promise.all(result.forEach(async (r) => {
-            r.dias_possiveis = r.dias_possiveis.split(',')
-            r.horas_possiveis = r.horas_possiveis.split(',')
-            let result = await Reserva.getReservasFuturasByLaboratorio(id)
-            let datasReservadas = []
-            if (result.length > 0) {
-                result.forEach(r => {
-                    datasReservadas.push({data: r.data, hora: r.hora});
-                })
-            }
-            r.reservasFuturas = datasReservadas
-        }));
 
         res.status = 200
         res.json(result)
