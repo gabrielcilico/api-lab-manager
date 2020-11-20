@@ -3,6 +3,7 @@ var router = express.Router();
 var HomeController = require("../controllers/HomeController");
 var PessoaController = require("../controllers/PessoaController");
 var LaboratorioController = require("../controllers/LaboratorioController");
+var ReservaController = require("../controllers/ReservaController");
 
 router.get("/", HomeController.index);
 
@@ -19,5 +20,11 @@ router.get('/laboratorio/getByNome/:nome', LaboratorioController.getByNome);
 router.post('/laboratorio/getByData', LaboratorioController.getByData);
 router.post('/laboratorio/getByHora', LaboratorioController.getByHora);
 router.post('/laboratorio/getByDataHora', LaboratorioController.getByDataHora);
+
+// Reserva
+router.post('/reserva', ReservaController.create);
+router.get('/reservas', ReservaController.getAll);
+router.get('/reserva/getByLaboratorio/:id', ReservaController.getByLaboratorio);
+router.delete('/reserva/:id', ReservaController.cancelaReserva);
 
 module.exports = router;
